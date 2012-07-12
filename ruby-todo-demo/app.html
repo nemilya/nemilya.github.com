@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>app.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>app.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p>Простое ToDo приложение на базе Ruby/Sinatra/DataMapper</p>
+
+<p><a href="https://github.com/nemilya/ruby-todo-demo">github</a>, <a href="http://jashkenas.github.com/docco/">демо</a></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>подключение Sinatra и DataMapper библиотек</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s2">&quot;rubygems&quot;</span>
+
+<span class="nb">require</span> <span class="s2">&quot;sinatra&quot;</span>
+<span class="nb">require</span> <span class="s1">&#39;dm-core&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;dm-migrations&#39;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>Таблица</p>
+
+<pre>
+   todos
+   * id [integer]
+   * todo [string]
+   * is_done [boolean]
+</pre>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">Todos</span>
+  <span class="kp">include</span> <span class="no">DataMapper</span><span class="o">::</span><span class="no">Resource</span>
+  <span class="n">property</span> <span class="ss">:id</span><span class="p">,</span> <span class="no">Serial</span><span class="p">,</span> <span class="ss">:key</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="n">property</span> <span class="ss">:todo</span><span class="p">,</span> <span class="nb">String</span>
+  <span class="n">property</span> <span class="ss">:is_done</span><span class="p">,</span> <span class="no">Boolean</span><span class="p">,</span> <span class="ss">:default</span><span class="o">=&gt;</span><span class="kp">false</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>для тестовых задач &ndash; настраиваем на БД Sqlite3</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">conn_string</span> <span class="o">=</span> <span class="s2">&quot;sqlite3://</span><span class="si">#{</span><span class="no">Dir</span><span class="o">.</span><span class="n">pwd</span><span class="si">}</span><span class="s2">/todos.db&quot;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>при выкладывании на CloudFoundry (там приложение автоматически запускается в режиме <code>production</code>,
+и подключённом сервисе MySQL
+необходимо проинициализировать данные доступа к БД
+<code>ENV['VCAP_SERVICES']</code> &ndash; переменная окружения проинициализированная CloudFoundry сервисом</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">configure</span> <span class="ss">:production</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;VCAP_SERVICES&#39;</span><span class="o">]</span>
+    <span class="nb">require</span> <span class="s2">&quot;json&quot;</span>
+    <span class="n">mysql_service</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;VCAP_SERVICES&#39;</span><span class="o">]</span><span class="p">)</span><span class="o">[</span><span class="s1">&#39;mysql-5.1&#39;</span><span class="o">].</span><span class="n">first</span>
+    <span class="n">dbname</span>   <span class="o">=</span> <span class="n">mysql_service</span><span class="o">[</span><span class="s1">&#39;credentials&#39;</span><span class="o">][</span><span class="s1">&#39;name&#39;</span><span class="o">]</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">mysql_service</span><span class="o">[</span><span class="s1">&#39;credentials&#39;</span><span class="o">][</span><span class="s1">&#39;username&#39;</span><span class="o">]</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">mysql_service</span><span class="o">[</span><span class="s1">&#39;credentials&#39;</span><span class="o">][</span><span class="s1">&#39;password&#39;</span><span class="o">]</span>
+    <span class="n">host</span>     <span class="o">=</span> <span class="n">mysql_service</span><span class="o">[</span><span class="s1">&#39;credentials&#39;</span><span class="o">][</span><span class="s1">&#39;host&#39;</span><span class="o">]</span>
+    <span class="n">port</span>     <span class="o">=</span> <span class="n">mysql_service</span><span class="o">[</span><span class="s1">&#39;credentials&#39;</span><span class="o">][</span><span class="s1">&#39;port&#39;</span><span class="o">]</span>
+    <span class="n">conn_string</span> <span class="o">=</span> <span class="s2">&quot;mysql://</span><span class="si">#{</span><span class="n">username</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">password</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">port</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">dbname</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
+        </div>
+        <p>инициализируем DataMapper на адаптер Базы Данных:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="no">DataMapper</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="ss">:default</span><span class="p">,</span> <span class="n">conn_string</span><span class="p">)</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-7'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-7">&#182;</a>
+        </div>
+        <p>обработка модели:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="no">DataMapper</span><span class="o">.</span><span class="n">finalize</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-8">&#182;</a>
+        </div>
+        <p>автоматическая миграция, если изменились поля в модели:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="no">DataMapper</span><span class="o">.</span><span class="n">auto_upgrade!</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-9'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-9">&#182;</a>
+        </div>
+        <p>набор &ldquo;функций&ndash;хелперов&rdquo; добавляем хелпер &ldquo;h&rdquo; для автоматического преобразования html в безопасный для отображения html:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">helpers</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">html_test</span><span class="p">)</span>
+    <span class="no">Rack</span><span class="o">::</span><span class="no">Utils</span><span class="o">.</span><span class="n">escape_html</span><span class="p">(</span><span class="n">html_test</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-10'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-10">&#182;</a>
+        </div>
+        <p>отображение страницы:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">get</span> <span class="s2">&quot;/&quot;</span> <span class="k">do</span>
+  <span class="vi">@todos</span> <span class="o">=</span> <span class="no">Todos</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:is_done</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:order</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:id</span><span class="o">.</span><span class="n">desc</span><span class="o">]</span><span class="p">)</span>
+  <span class="vi">@done_todos</span> <span class="o">=</span> <span class="no">Todos</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:is_done</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:order</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:id</span><span class="o">.</span><span class="n">desc</span><span class="o">]</span><span class="p">)</span>
+  <span class="n">erb</span> <span class="ss">:index</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-11'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-11">&#182;</a>
+        </div>
+        <p>обработка на нажатие <code>[Кнопка Добавить]</code> &ndash;  добавление пункта, передаётся <code>'text'</code>:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">post</span> <span class="s2">&quot;/add&quot;</span> <span class="k">do</span>
+  <span class="n">todo</span> <span class="o">=</span> <span class="no">Todos</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:todo</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:text</span><span class="o">]</span><span class="p">)</span>
+  <span class="n">todo</span><span class="o">.</span><span class="n">save</span>
+  <span class="n">redirect</span> <span class="s2">&quot;/&quot;</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-12'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-12">&#182;</a>
+        </div>
+        <p>обработка на нажатие <code>[Кнопка Выполнены]</code> &ndash; отметка о выполнении, передаётся массив <code>'ids[]'</code>:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">post</span> <span class="s2">&quot;/done&quot;</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:ids</span><span class="o">]</span>
+    <span class="n">params</span><span class="o">[</span><span class="ss">:ids</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo_id</span><span class="o">|</span>
+      <span class="no">Todos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">todo_id</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="ss">:is_done</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="n">redirect</span> <span class="s2">&quot;/&quot;</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-13'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-13">&#182;</a>
+        </div>
+        <p>обработка на нажатие <code>[Кнопка Архивировать]</code> &ndash;  удаление всех выполненных todo пунктов:</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">post</span> <span class="s2">&quot;/archive&quot;</span> <span class="k">do</span>
+  <span class="no">Todos</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:is_done</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span><span class="o">.</span><span class="n">destroy</span>
+  <span class="n">redirect</span> <span class="s2">&quot;/&quot;</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-14'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-14">&#182;</a>
+        </div>
+        <p>в Sinatra возможно встраивать шаблоны в программу,
+окончание программы определяется по <code>__END__</code>
+далее идут шаблоны, название шаблона указывается после <code>@@</code></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="cp">__END__</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-15'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-15">&#182;</a>
+        </div>
+        <p>шаблоны отображения:</p>
+
+<p><code>layout</code> &ndash; внешний шаблон,</p>
+
+<p><code>index</code> &ndash; главная страница.</p>
+
+<p>согласно постановке:</p>
+
+<pre>
+   h1. Простое ToDo приложение
+
+   h2. Актуальные
+
+   [текстовое поле] [Кнопка Добавить]
+
+   // список todo пунктов, снизу вверх (по id)
+   [checkbox] [текст todo1]
+   [checkbox] [текст todo2]
+   ...
+   [Кнопка Выполнены]
+
+   h2. Выполненные
+
+   // список выполненных todo пунктов, 
+   // с сортировкой снизу вверх (по id)
+   // визуально перечёркнуты
+   [текст done-todo1]
+   [текст done-todo2]
+   ...
+   [Кнопка Архивировать]
+</pre>
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="cp">@@layout</span>
+
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="cp">&lt;html&gt;</span>
+<span class="cp">  &lt;head&gt;</span>
+<span class="cp">    &lt;title&gt;Ruby ToTo Demo App&lt;/title&gt;</span>
+<span class="cp">    &lt;meta charset=&quot;utf-8&quot; /&gt;</span>
+<span class="cp">  &lt;/head&gt;</span>
+<span class="cp">  &lt;body&gt;</span>
+<span class="cp">    &lt;h1&gt;Простое ToDo приложение&lt;/h1&gt;</span>
+<span class="cp">    &lt;%= yield %&gt;</span>
+<span class="cp">    &lt;br /&gt;</span>
+<span class="cp">    &lt;small&gt;</span>
+<span class="cp">      github:</span>
+<span class="cp">        &lt;a href=&quot;https://github.com/nemilya/ruby-todo-demo&quot;&gt;source code&lt;/a&gt; |</span>
+<span class="cp">        &lt;a href=&quot;https://github.com/nemilya/ruby-todo-demo/blob/master/spec.ru.md&quot;&gt;docs&lt;/a&gt;</span>
+<span class="cp">    &lt;/small&gt;</span>
+<span class="cp">  &lt;/body&gt;</span>
+<span class="cp">&lt;/html&gt;</span>
+
+<span class="cp">@@index</span>
+
+<span class="cp">&lt;h2&gt;Актуальные&lt;/h2&gt;</span>
+
+<span class="cp">&lt;form action=&quot;/add&quot; method=&quot;post&quot;&gt;</span>
+<span class="cp">  &lt;input type=&quot;text&quot; name=&quot;text&quot;&gt;</span>
+<span class="cp">  &lt;input type=&quot;submit&quot; value=&quot;Добавить&quot;&gt;</span>
+<span class="cp">&lt;/form&gt;</span>
+<span class="cp">&lt;br /&gt;</span>
+
+<span class="cp">&lt;% if @todos.size &gt; 0 %&gt;</span>
+<span class="cp">  &lt;form action=&quot;/done&quot; method=&quot;post&quot;&gt;</span>
+<span class="cp">    &lt;% @todos.each do |todo| %&gt;</span>
+<span class="cp">      &lt;input type=&quot;checkbox&quot; name=&quot;ids[]&quot; value=&quot;&lt;%= todo.id %&gt;&quot;&gt; &lt;%= h todo.todo %&gt;&lt;br /&gt;</span>
+<span class="cp">    &lt;% end %&gt;</span>
+<span class="cp">    &lt;br /&gt;</span>
+<span class="cp">    &lt;input type=&quot;submit&quot; value=&quot;Выполнены&quot;&gt;</span>
+<span class="cp">  &lt;/form&gt;</span>
+<span class="cp">&lt;% end %&gt;</span>
+
+<span class="cp">&lt;% if @done_todos.size &gt; 0 %&gt;</span>
+<span class="cp">  &lt;h2&gt;Выполненные&lt;/h2&gt;</span>
+
+<span class="cp">  &lt;form action=&quot;/archive&quot; method=&quot;post&quot;&gt;</span>
+<span class="cp">    &lt;% @done_todos.each do |todo| %&gt;</span>
+<span class="cp">      &lt;del&gt;&lt;%= h todo.todo %&gt;&lt;/del&gt;&lt;br /&gt;</span>
+<span class="cp">    &lt;% end %&gt;</span>
+<span class="cp">    &lt;br /&gt;</span>
+<span class="cp">    &lt;input type=&quot;submit&quot; value=&quot;Архивировать&quot;&gt;</span>
+<span class="cp">  &lt;/form&gt;</span>
+<span class="cp">&lt;% end %&gt;</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
