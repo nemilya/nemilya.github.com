@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>CoffeeScript Game Sokoban</title>
+    <script src="game_sokoban.js"></script>
+  </head>
+<body>
+
+<h1>CoffeeScript Game Sokoban</h1>
+
+<pre id="level" style="font-family: Courier;">
+ #########
+ #  #   .#
+ #@$ $   #
+ # $ ##..#
+ #   #####
+ #########
+</pre>
+
+<script>
+  var game = new GameSokoban();
+  var field = document.getElementById('level');
+  game.set_level(field.innerHTML);
+
+  function move(direction){
+    game.sokoban_move(direction);
+    screen = game.get_level();
+    field.innerHTML = screen;
+  }
+</script>
+
+<table>
+  <tr>
+    <td></td>
+    <td align="center"><button onclick="move('up')" >Up</button></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><button onclick="move('left')" >Left</button></td>
+    <td></td>
+    <td><button onclick="move('right')" >Right</button></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><button onclick="move('down')" >Down</button></td>
+    <td></td>
+  </tr>
+</table>
+
+<small><a href="https://github.com/nemilya/coffeescript-game-sokoban">github</a></small>
+
+</body>
+</html>
