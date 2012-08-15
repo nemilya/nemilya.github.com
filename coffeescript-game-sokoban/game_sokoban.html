@@ -25,6 +25,21 @@
     game.sokoban_move(direction);
     field.innerHTML = game.get_level();
   }
+
+  function handle_keyboard(e){
+    e = (e) ? e : ((window.event) ? e : null);
+    if (e){
+      switch(e.keyCode){
+        case 37: move('left'); break;
+        case 38: move('up'); break;
+        case 39: move('right'); break;
+        case 40: move('down'); break;
+      }
+    }
+  }
+
+  document.onkeydown = handle_keyboard;
+
 </script>
 
 <table>
@@ -35,7 +50,7 @@
   </tr>
   <tr>
     <td><button onclick="move('left')" >Left</button></td>
-    <td></td>
+    <td align="center">[cursor]</td>
     <td><button onclick="move('right')" >Right</button></td>
   </tr>
   <tr>
