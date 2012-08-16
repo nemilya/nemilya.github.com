@@ -1,0 +1,221 @@
+<html>
+  <head>
+    <title>Taco Truck</title>
+		<style>
+
+			html, body, div, span, applet, object, iframe,
+			h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+			a, abbr, acronym, address, big, cite, code,
+			del, dfn, em, img, ins, kbd, q, s, samp,
+			small, strike, strong, sub, sup, tt, var,
+			b, u, i, center,
+			dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend,
+			table, caption, tbody, tfoot, thead, tr, th, td,
+			article, aside, canvas, details, embed, 
+			figure, figcaption, footer, header, hgroup, 
+			menu, nav, output, ruby, section, summary,
+			time, mark, audio, video {
+				margin: 0;
+				padding: 0;
+				border: 0;
+				font-size: 100%;
+				font: inherit;
+				vertical-align: baseline;
+			}
+			/* HTML5 display-role reset for older browsers */
+			article, aside, details, figcaption, figure, 
+			footer, header, hgroup, menu, nav, section {
+				display: block;
+			}
+			body {
+				line-height: 1;
+			}
+			ol, ul {
+				list-style: none;
+			}
+			blockquote, q {
+				quotes: none;
+			}
+			blockquote:before, blockquote:after,
+			q:before, q:after {
+				content: '';
+				content: none;
+			}
+			table {
+				border-collapse: collapse;
+				border-spacing: 0;
+			}
+
+
+
+
+
+			body {
+				font-family: Helvetica;
+				margin: 1em;
+			}
+
+      .container {
+        margin: 0 auto;
+        width: 940px;
+      }
+
+			h1 {
+				font-size: 2.0em;
+			}
+
+			.api-resource {
+				margin: 1em 0;
+			}
+
+			.api-resource .method {
+				font-size: 1em;
+				background-color: #999;
+				background-image: -webkit-linear-gradient(top, 
+				transparent 0%, 
+				rgba(0, 0, 0, 0.296875) 100%);
+				background-origin: padding-box;
+				border-bottom-color: 
+				white;
+				border-bottom-left-radius: 0px;
+				border-bottom-style: none;
+				border-bottom-width: 0px;
+				border-left-color: 
+				white;
+				border-left-style: none;
+				border-left-width: 0px;
+				border-right-color: 
+				white;
+				border-right-style: none;
+				border-right-width: 0px;
+				border-top-color: 
+				white;
+				border-top-left-radius: 3px;
+				border-top-style: none;
+				border-top-width: 0px;
+				color: 
+				white;
+				text-align: center;
+				text-shadow: 
+				rgba(0, 0, 0, 0.296875) 0px -1px 0px;
+				text-transform: uppercase;
+				vertical-align: baseline;
+				padding: 0.5em;
+				display: inline-block;
+				width: 84px;
+			}
+
+			.api-resource .path {
+				display: inline-block;
+				font-family: Monaco, fixed;
+				color: #0669CD;
+				font-size: 1em;
+			}
+
+      .desc {
+        margin: 1em 0;
+        color: 
+        #333;
+        display: block;
+        font-family: Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: 100;
+        height: 17px;
+        line-height: 17px;
+        text-shadow: 
+        rgba(255, 255, 255, 0.597656) 0px 1px 0px;
+        vertical-align: baseline;
+      }
+			.api-resource .params,
+			.api-resource .response {
+				font-family: Monaco, fixed;
+				margin: 1em 0;
+				overflow: scroll;
+				white-space: pre;
+				background-color: #333333;
+				color: #8B8B8B;
+				padding: 1em;
+				border-radius: 2px;
+			}
+
+      .api-resource .accept,
+      .api-resource .content_type {
+        white-space: normal;
+				color: #C29262;
+				display: block;
+				font-family: Helvetica;
+			}
+
+      .api-resource .accept span,
+      .api-resource .content_type span {
+      float: right;
+      background-color: #2169CD;
+      color: white;
+      padding: 0.5em;
+      font-size: 0.75em;
+      border-radius: 0.25em;
+      }
+
+			.api-resource .content_type {
+				display: block;
+				color: #C29262;
+				font-family: Helvetica;
+			}
+		</style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Taco Truck</h1>
+      <div class="desc">
+        <p>Get some tacos, post some tacos!</p>
+
+      </div>
+      <div class="api">
+        <div class="api-resource">
+  <div class="method">GET</div>
+  <div class="path">/tacos.json</div>
+  <div class="desc"><p>Get all your tacos</p>
+</div>
+
+  <div class="params"><div class="accept">IN <span>json</span></div>
+{}
+  </div>
+
+  <div class="response"><div class="content_type">OUT <span>json</span></div>
+[
+  {
+    &quot;meat&quot;: &quot;chicken&quot;,
+    &quot;lettuce&quot;: true,
+    &quot;tomatoes&quot;: true
+  }
+]
+  </div>
+
+</div>
+<div class="api-resource">
+  <div class="method">POST</div>
+  <div class="path">/tacos.json</div>
+  <div class="desc"><p>Make a new taco!</p>
+</div>
+
+  <div class="params"><div class="accept">IN <span>json</span></div>
+{
+  &quot;meat&quot;: &quot;beef&quot;,
+  &quot;lettuce&quot;: true
+}
+  </div>
+
+  <div class="response"><div class="content_type">OUT <span>json</span></div>
+{
+}
+  </div>
+
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>
+
