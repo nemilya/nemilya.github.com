@@ -11,6 +11,7 @@
     For more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
   -->
+<!--  <base href="/"> -->
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -19,10 +20,10 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ascii">
+  <meta name="apple-mobile-web-app-title" content="flutter_ascii_game_of_life">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <title>ascii</title>
+  <title>flutter_ascii_game_of_life</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -30,7 +31,7 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    var serviceWorkerVersion = '1192273510';
+    var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {

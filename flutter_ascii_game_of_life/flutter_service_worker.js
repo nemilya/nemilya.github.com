@@ -3,20 +3,20 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"main.dart.js": "7d2ce270be1cf68865c6fad7cfb46708",
-"icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
+  "main.dart.js": "2ab662354226f524277e2f3efd035272",
+"version.json": "9ccaf5e3a981681a1c508daeeb9eaf55",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"assets/NOTICES": "7d1b8c930fffc7288e2d91c7d23b114d",
+"icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
+"assets/NOTICES": "f7d2292e6acade5fde99a337c9848760",
 "assets/AssetManifest.json": "2288109519b47607b3b5e66c8cd92d1d",
-"assets/fonts/MaterialIcons-Regular.otf": "4e6447691c9509f7acdbf8a931a85ca1",
-"assets/fonts/RobotoMono-Bold.ttf": "e72fdf1cca2cebcbe91325bbe9f9e5da",
-"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
 "assets/FontManifest.json": "32dfbe8c091ce560998939cd6f4ec647",
-"manifest.json": "e9dfda8ea5bf03fb0a28b07023d8328e",
-"index.html": "9b32d29fb9ffa2ec904727709efc7093",
-"/": "9b32d29fb9ffa2ec904727709efc7093",
-"version.json": "614b7f0fb645ab98cdae709662a2b99c"
+"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
+"assets/fonts/RobotoMono-Bold.ttf": "e72fdf1cca2cebcbe91325bbe9f9e5da",
+"assets/fonts/MaterialIcons-Regular.otf": "1288c9e28052e028aba623321f7826ac",
+"favicon.png": "5dcef449791fa27946b3d35ad8803796",
+"index.html": "b9b177d66680f47dbe3d7f4e9b06d701",
+"/": "b9b177d66680f47dbe3d7f4e9b06d701",
+"manifest.json": "681bd38ff9aaf064322e53a353627926"
 };
 
 // The application shell files that are downloaded before a service worker can
@@ -34,7 +34,7 @@ self.addEventListener("install", (event) => {
   return event.waitUntil(
     caches.open(TEMP).then((cache) => {
       return cache.addAll(
-        CORE.map((value) => new Request(value, {'cache': 'reload'})));
+        CORE.map((value) => new Request(value + '?revision=' + RESOURCES[value], {'cache': 'reload'})));
     })
   );
 });

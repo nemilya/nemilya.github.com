@@ -1,6 +1,6 @@
 {
-    "name": "ascii",
-    "short_name": "ascii",
+    "name": "flutter_ascii_game_of_life",
+    "short_name": "flutter_ascii_game_of_life",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
