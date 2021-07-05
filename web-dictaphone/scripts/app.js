@@ -28,7 +28,7 @@ if (navigator.mediaDevices.getUserMedia) {
     visualize(stream);
 
     // onmousedown
-    rec.touchstart = function() { 
+    rec.ontouchstart = function() { 
       console.log("onmousedown");
       console.log("remove element");
       if (document.getElementById("audio")){
@@ -41,7 +41,7 @@ if (navigator.mediaDevices.getUserMedia) {
     }
 
     // onmouseup
-    rec.touchend = function() {
+    rec.ontouchend = function() {
       console.log("onmouseup");
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
