@@ -28,6 +28,7 @@ if (navigator.mediaDevices.getUserMedia) {
     visualize(stream);
 
     // onmousedown
+    // rec.onmousedown = function() { 
     rec.ontouchstart = function() { 
       console.log("onmousedown");
       console.log("remove element");
@@ -41,6 +42,7 @@ if (navigator.mediaDevices.getUserMedia) {
     }
 
     // onmouseup
+    // rec.onmouseup = function() {
     rec.ontouchend = function() {
       console.log("onmouseup");
       mediaRecorder.stop();
@@ -72,6 +74,7 @@ if (navigator.mediaDevices.getUserMedia) {
       chunks = [];
       const audioURL = window.URL.createObjectURL(blob);
       audio.src = audioURL;
+      audio.play();
       console.log("recorder stopped");
     }
 
