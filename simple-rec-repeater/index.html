@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Simple Rec repeater</title>
+</head>
+<body>
+
+  <div id="rec_repeater"  align="center">
+    <div v-if="selected_word">
+      <div style="margin-bottom: 10pt;"><a href="#" @click.prevent="list()">to lisk</a></div>
+      <div><span style="font-size: 15pt">{{selected_word.word}}</span> <span style="color: gray">{{selected_word.pronunciation}}</span></div>
+      <button @click="play" style="position: absolute; right: 0; bottom: 40pt; width: 100pt; height: 30pt">play</button>
+    </div>
+    <div v-else>
+      <div style="margin-bottom: 10pt;">Words</div>
+      <div v-for="word in words" style="margin-bottom: 5pt">
+        {{word.word}}
+        <button @click="selected_word = word">select</button>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <button class="rec_btn" style="position: absolute; right: 0; bottom: 0; width: 100pt; height: 30pt">Rec</button>
+  <div class="records" align="center"></div>
+
+  <script src="scripts/vue.global.prod.3.1.1.js"></script>
+  <script src="scripts/recording.js"></script>
+  <script>
+    var audio = new Audio();
+    audio.addEventListener("ended", function() {
+      // after audio ended
+      // play if exists
+      var recorded_audio = document.getElementById("audio_element");
+      if (recorded_audio){
+        recorded_audio.play();
+      }
+    });
+
+    const RecRepeater = {
+      data() {
+        return {
+          text: 'hello',
+          selected_word: null,
+          // { word: "...", pronunciation: "...", url: "...", archived: "" }
+          words: [
+            { word: "appreciate", pronunciation: "/əˈpriː.ʃi.eɪt/", url: "https://dictionary.cambridge.org/media/english/uk_pron/u/uka/ukapp/ukappra007.mp3" },
+            { word: "persuasive", pronunciation: "/pəˈsweɪ.sɪv/", url: "https://dictionary.cambridge.org/media/english/uk_pron/u/ukp/ukper/ukperso017.mp3" },
+          ]
+        }
+      },
+      methods: {
+        list(){
+          this.selected_word = null;
+          // delete rec
+          if (document.getElementById("audio")){
+            document.getElementById("audio").parentNode.removeChild(document.getElementById("audio"))
+          }
+        },
+        play(){
+          audio.src = this.selected_word.url;
+          audio.play();
+        },
+      }
+    }
+    Vue.createApp(RecRepeater).mount('#rec_repeater');
+  </script>
+</body>
+</html>
