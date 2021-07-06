@@ -19,9 +19,9 @@
 
   <div id="rec_repeater"  align="center">
     <div v-if="selected_word">
-      <div style="margin-bottom: 10pt;"><a href="#" @click.prevent="list()">to lisk</a></div>
+      <div style="margin-bottom: 10pt; font-size: 8pt; text-decoration: none"><a href="#" @click.prevent="list()">to list</a></div>
       <div><span style="font-size: 15pt">{{selected_word.word}}</span> <span style="color: gray">{{selected_word.pronunciation}}</span></div>
-      <button @click="play" style="position: absolute; right: 0; bottom: 40pt; width: 100pt; height: 30pt">play</button>
+      <button @click="play" style="position: absolute; right: 0; bottom: 40pt; width: 100pt; height: 30pt">Play</button>
     </div>
     <div v-else>
       <div style="margin-bottom: 10pt;">Words</div>
